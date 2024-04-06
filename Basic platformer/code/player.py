@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
 
     #Метод для заргрузки файлов персонажа
     def import_character_assets(self):
-        character_path = "/Users/korne/Desktop/Платформер/Basic platformer/graphics/character/"
+        character_path = "../graphics/character/"
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
 
         for animation in self.animations.keys():
@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):
     
     #Добавление частиц при приземлении
     def import_particles(self):
-        self.particles = import_folder("/Users/korne/Desktop/Платформер/Basic platformer/graphics/character/dust_particles/run")
+        self.particles = import_folder("../graphics/character/dust_particles/run")
 
     #Анимация персонажа
     def animate(self):
