@@ -1,6 +1,19 @@
 from csv import reader #позволяет читать файлы формата сиви
 from option import tile_size
+from os import walk
 import pygame
+
+
+
+def import_folder(path):
+    surface_list = []
+
+    for _,__,image_files in walk(path):
+        for image in image_files:
+            full_path = path + "/" + image #полный путь файла внутри этой папки
+            image_surf = pygame.image.load(full_path).convert_alpha()
+            surface_list.append(image_surf)
+    return surface_list
 def import_csv_layout(path):
     platform_map = []
     with open(path) as map:
@@ -20,7 +33,7 @@ def import_cut_graphics(path):
             x = col * tile_size
             y = row * tile_size
             new_surf = pygame.Surface((tile_size,tile_size)) #рисуется новая поверхность
-            new_surf.blit(surface,(x,y),pygame.Rect(x,y,tile_size,tile_size))
+            new_surf.blit(surface,(0,0),pygame.Rect(x,y,tile_size,tile_size))
             cut_tiles.append(new_surf)
 
     return cut_tiles

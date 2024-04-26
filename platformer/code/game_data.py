@@ -8,7 +8,7 @@ level_0 = {
     "enemies": "../levels/0/level_0._enemies.csv",
     "stop_enemy": "../levels/0/level_0._stop_enemy.csv",
     "player": "../levels/0/level_0._player.csv",
-    "green": "../levels/0/level_0._fg_trees.csv"}
+    "green": "../levels/0/level_0._green.csv"}
 
 
 
