@@ -4,20 +4,20 @@ from support import import_folder
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, surface, create_jump_particles):
         super().__init__()
-        self.import_character_assets() #импортирует файлы персонажа
-        self.frame_index = 0 #значение кадра
-        self.animation_speed = 0.15 #скорость анимации
+        self.import_character_assets() # импортирует файлы персонажа
+        self.frame_index = 0 # значение кадра
+        self.animation_speed = 0.15 # скорость анимации
         self.image = self.animations["idle"][self.frame_index]
-        self.rect = self.image.get_rect(topleft=pos)   #начальная позиция игрока
+        self.rect = self.image.get_rect(topleft=pos)   # начальная позиция игрока
         
-        #механика движения игрока
-        self.direction = pygame.math.Vector2(0,0)     #направление игрока при помощи вектора
+        # механика движения игрока
+        self.direction = pygame.math.Vector2(0,0)     # направление игрока при помощи вектора
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
         
-        #все, что связано с частицами 
-        self.import_particles() #импорт частиц
+        # все, что связано с частицами
+        self.import_particles() # импорт частиц
         self.particles_frame_index = 0
         self.particles_animation_speed = 0.15
         self.display_surface = surface
@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         
         
         
-        #статус  игрока
+        # статус  игрока
         self.status = "idle"
         self.facing_right = True
         self.on_ground = False
@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.on_left = False
         self.on_right = False
 
-    #Метод для заргрузки файлов персонажа
+    # Метод для загрузки файлов персонажа
     def import_character_assets(self):
         character_path = "../graphics/character/"
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
@@ -42,15 +42,15 @@ class Player(pygame.sprite.Sprite):
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
     
-    #Добавление частиц при приземлении
+    # Добавление частиц при приземлении
     def import_particles(self):
         self.particles = import_folder("../graphics/character/dust_particles/run")
 
-    #Анимация персонажа
+    # Анимация персонажа
     def animate(self):
         animation = self.animations[self.status]
         
-        #Проходим по индексу кадра и создаем анимацию персонажа
+        # Проходим по индексу кадра и создаем анимацию персонажа
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
@@ -62,7 +62,7 @@ class Player(pygame.sprite.Sprite):
            flipped_image = pygame.transform.flip(image,True,False) #смена сторон персонажа
            self.image = flipped_image
            
-        #создание нового прямоугольника
+        # создание нового прямоугольника
         if self.on_ground and self.on_right:  
             self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
         elif self.on_ground and self.on_left:
@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
         elif self.on_ceiling:
             self.rect = self.image.get_rect(midtop = self.rect.midtop)
 
-    #Анимация частиц
+    # Анимация частиц
     def run_particles_animation(self):
         if self.status == "run" and self.on_ground:
             self.particles_frame_index += self.particles_animation_speed
@@ -87,14 +87,14 @@ class Player(pygame.sprite.Sprite):
             dust_particle = self.particles[int(self.particles_frame_index)]
 
             if self.facing_right:
-                pos = self.rect.bottomleft - pygame.math.Vector2(10,10)  #анимация частиц с левой стороны, когда игрок направлен вправо
+                pos = self.rect.bottomleft - pygame.math.Vector2(10,10)  # анимация частиц с левой стороны, когда игрок направлен вправо
                 self.display_surface.blit(dust_particle, pos)
             else:
-                pos = self.rect.bottomright - pygame.math.Vector2(10,10)  #наоборот
+                pos = self.rect.bottomright - pygame.math.Vector2(10,10)  # наоборот
                 flipped_particle = pygame.transform.flip(dust_particle, True, False)
                 self.display_surface.blit(flipped_particle, pos)
 
-    #Движение игрока
+    # Движение игрока
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -113,7 +113,7 @@ class Player(pygame.sprite.Sprite):
             self.jump()
             self.create_jump_particles(self.rect.midbottom)  # появление пыльных частиц во время прыжка игрока
 
-    #Статус движения или бездействия игрока
+    # Статус движения или бездействия игрока
     def get_status(self):
         if self.direction.y < 0:
             self.status = "jump"
@@ -126,16 +126,16 @@ class Player(pygame.sprite.Sprite):
                 self.status = "idle"
            
         
-    #Метод применения силы тяжести
+    # Метод применения силы тяжести
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
         
-    #Метод прыжка
+    # Метод прыжка
     def jump(self):
         self.direction.y = self.jump_speed
 
-    #Метод обновления самого себя
+    # Метод обновления самого себя
     def update(self):
         self.get_input()
         self.animate()

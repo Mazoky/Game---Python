@@ -1,27 +1,27 @@
 import pygame
 from support import import_folder
-class Tile(pygame.sprite.Sprite):
+class Tile (pygame.sprite.Sprite):
     def __init__(self,size,x,y):
         super().__init__()
         self.image = pygame.Surface((size,size))
         self.rect = self.image.get_rect(topleft = (x,y))
-    def update(self,shift):     #прокрутка камеры
+    def update(self,shift): # прокрутка камеры
         self.rect.x += shift
 
 
 class StaticTile(Tile):
     def __init__(self,size,x,y,surface):
         super().__init__(size,x,y)
-        self.image = surface #индивидуальное изменение спрайта
+        self.image = surface # индивидуальное изменение спрайта
 
 class Box(StaticTile):
     def __init__(self,size,x,y):
         super().__init__(size,x,y,pygame.image.load("../graphics/terrain/box.png").convert_alpha())
-        offset_y = y + size  #чтобы ящики стояли на земле, а не висели в воздухе
+        offset_y = y + size  # чтобы ящики стояли на земле, а не висели в воздухе
         self.rect = self.image.get_rect(bottomleft = (x,offset_y))
 
 
-class AnimatedTile(Tile):  #класс с механизмом анимированной плитки
+class AnimatedTile(Tile):  # класс с механизмом анимированной плитки
     def __init__(self,size,x,y,path):
         super().__init__(size,x,y)
         self.frames = import_folder(path)
@@ -48,5 +48,5 @@ class Money(AnimatedTile):
 class Trees(AnimatedTile):
     def __init__(self,size,x,y,path,offset):
         super().__init__(size, x, y, path)
-        offset_y = y - offset #смещение деревьев
+        offset_y = y - offset # смещение деревьев
         self.rect.topleft = (x,offset_y)
